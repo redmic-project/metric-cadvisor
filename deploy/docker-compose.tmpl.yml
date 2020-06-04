@@ -14,10 +14,10 @@ services:
       - ${DOCKER_DATA_PATH:-/var/lib/docker}:/var/lib/docker:ro
     healthcheck:
       test: wget --spider -q -t 1 http://localhost:8080/healthz
-      interval: ${HEALTHCHECK_INTERVAL:-30s}
-      timeout: ${HEALTHCHECK_TIMEOUT:-15s}
+      interval: ${HEALTHCHECK_INTERVAL:-1m}
+      timeout: ${HEALTHCHECK_TIMEOUT:-30s}
       retries: ${HEALTHCHECK_RETRIES:-10}
-      start_period: ${HEALTHCHECK_START_PERIOD:-5m}
+      start_period: ${HEALTHCHECK_START_PERIOD:-2m}
     deploy:
       mode: global
       restart_policy:
@@ -26,11 +26,11 @@ services:
         delay: ${UPDATE_DELAY:-1m}
       resources:
         limits:
-          cpus: '${RESOURCES_LIMITS_CPUS:-0.1}'
+          cpus: '${RESOURCES_LIMITS_CPUS:-0.5}'
           memory: ${RESOURCES_LIMITS_MEMORY:-512M}
         reservations:
           cpus: '${RESOURCES_RESERVATIONS_CPUS:-0.001}'
-          memory: ${RESOURCES_RESERVATIONS_MEMORY:-256M}
+          memory: ${RESOURCES_RESERVATIONS_MEMORY:-128M}
 
 networks:
   metric-net:
