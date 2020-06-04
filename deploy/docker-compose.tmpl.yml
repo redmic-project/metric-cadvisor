@@ -12,6 +12,12 @@ services:
       - /sys:/sys:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ${DOCKER_DATA_PATH:-/var/lib/docker}:/var/lib/docker:ro
+    healthcheck:
+      test: wget --spider -q -t 1 http://localhost:8080/healthz
+      interval: ${HEALTHCHECK_INTERVAL:-30s}
+      timeout: ${HEALTHCHECK_TIMEOUT:-15s}
+      retries: ${HEALTHCHECK_RETRIES:-10}
+      start_period: ${HEALTHCHECK_START_PERIOD:-5m}
     deploy:
       mode: global
       restart_policy:
